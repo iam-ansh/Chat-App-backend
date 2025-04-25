@@ -35,6 +35,13 @@ interface User {
 }
 
 let allSockets: User[] = [];
+const port = process.env.PORT || 4000 
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+
 
 // REST API endpoints
 app.get('/api/messages/:room', async (req, res) => {
@@ -105,6 +112,6 @@ wss.on("connection", (socket) => {
     });
 });
 
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log('REST API server running on port 3000');
 });
