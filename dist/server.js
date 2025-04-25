@@ -17,13 +17,22 @@ const ws_1 = require("ws");
 const mongoose_1 = __importDefault(require("mongoose"));
 const cors_1 = __importDefault(require("cors"));
 const Message_1 = require("./models/Message");
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
+const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield mongoose_1.default.connect(process.env.MONGO_URI);
+        console.log("MongoDB Connected");
+    }
+    catch (error) {
+        console.error("MongoDB Connection Failed:", error);
+        process.exit(1);
+    }
+});
+connectDB();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-// Update mongoose connection
-mongoose_1.default.connect('mongodb+srv://prakhar20jan:Z3HpriiqWGkREuS1@cluster0.wulrz.mongodb.net/chat-app')
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('MongoDB connection error:', err));
 const wss = new ws_1.WebSocketServer({ port: 8080 });
 let allSockets = [];
 // REST API endpoints

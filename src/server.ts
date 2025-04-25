@@ -4,17 +4,27 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import { Message } from './models/Message';
 import dotenv from 'dotenv';
+
 dotenv.config();
+const connectDB = async () => {
+    try {
+      await mongoose.connect(process.env.MONGO_URI as string);
+      console.log("MongoDB Connected");
+    } catch (error) {
+      console.error("MongoDB Connection Failed:", error);
+      process.exit(1);
+  }
+  };
+
+
+
+
+connectDB();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Update mongoose connection
-//@ts-ignore
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
 
 const wss = new WebSocketServer({ port: 8080 });
 
